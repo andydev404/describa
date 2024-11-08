@@ -7,7 +7,13 @@ import { EmptyProductList } from '@/features/products/components/empty-product-l
 import { ProductCard } from '@/features/products/components/product-card'
 import { cn } from '@/lib/utils'
 
-const CatalogDetailsPage = async ({ params }: { params: { id: string } }) => {
+type PageProps = {
+  params: {
+    id: string;
+  };
+};
+
+const CatalogDetailsPage = async ({ params }: PageProps) => {
   const catalog = await getCatalog(params.id)
 
   if (!catalog) redirect('/catalogs')
