@@ -8,14 +8,15 @@ import { ProductCard } from '@/features/products/components/product-card'
 import { cn } from '@/lib/utils'
 
 interface PageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
   searchParams: { [key: string]: string | string[] | undefined };
 }
 
 const CatalogDetailsPage = async ({ params }: PageProps) => {
-  const catalog = await getCatalog(params.id)
+  const resolvedParams = await params
+  const catalog = await getCatalog(resolvedParams.id)
 
   if (!catalog) redirect('/catalogs')
 
@@ -25,8 +26,8 @@ const CatalogDetailsPage = async ({ params }: PageProps) => {
         <h1 className={cn('flex-1 text-xl font-medium')}>
           Products: <span className={'font-semibold'}>{catalog.title}</span>
         </h1>
-        <DeleteCatalog catalogId={params.id} />
-        <EditCatalog initialValue={catalog.title} catalogId={params.id} />
+        <DeleteCatalog catalogId={resolvedParams.id} />
+        <EditCatalog initialValue={catalog.title} catalogId={resolvedParams.id} />
       </div>
       {catalog.products.length === 0 && <EmptyProductList />}
       <div
