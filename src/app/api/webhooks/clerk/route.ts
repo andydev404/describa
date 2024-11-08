@@ -49,7 +49,7 @@ export async function POST(req: Request) {
         currentCredits: CREDIT_PACKAGES.Free.credits
       })
       await resend.emails.send({
-        from: 'Andy from Describa <andy@describa.ai>',
+        from: `Andy from Describa <andy@describa.ai>`,
         to: event.data.email_addresses[0].email_address,
         subject: `Welcome to Describa! Let's Create Amazing Product Descriptions 🚀`,
         react: WelcomeEmail()

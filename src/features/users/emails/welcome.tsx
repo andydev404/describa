@@ -44,7 +44,9 @@ export const WelcomeEmail = () => {
   return (
     <Html>
       <Head />
-      <Preview>Describa Welcome</Preview>
+      <Preview>
+        Thank you for choosing Describa! We&#39;re excited to help you transform your product images into compelling,
+        SEO-optimized descriptions that drive sales.</Preview>
       <Tailwind
         config={{
           theme: {
@@ -65,8 +67,8 @@ export const WelcomeEmail = () => {
         <Body className="bg-offwhite font-sans text-base">
           <Img
             src={`https://utfs.io/f/gzOTTZHX3WMAwrIrlhfqukbIj36nmVyBrUOEA9ixdWlvcFMf`}
-            width="144"
-            height="144"
+            width="110"
+            height="110"
             alt="Describa"
             className="mx-auto my-20"
           />
