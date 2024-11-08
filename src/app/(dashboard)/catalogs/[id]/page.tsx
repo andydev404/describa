@@ -7,11 +7,12 @@ import { EmptyProductList } from '@/features/products/components/empty-product-l
 import { ProductCard } from '@/features/products/components/product-card'
 import { cn } from '@/lib/utils'
 
-type PageProps = {
+interface PageProps {
   params: {
     id: string;
   };
-};
+  searchParams: { [key: string]: string | string[] | undefined };
+}
 
 const CatalogDetailsPage = async ({ params }: PageProps) => {
   const catalog = await getCatalog(params.id)
