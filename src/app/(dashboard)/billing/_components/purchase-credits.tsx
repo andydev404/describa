@@ -9,7 +9,13 @@ import {
   CardHeader,
   Chip,
   Divider,
-  Spacer
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  Spacer,
+  useDisclosure
 } from '@nextui-org/react'
 import { loadStripe } from '@stripe/stripe-js'
 import { Check } from 'lucide-react'
@@ -32,12 +38,13 @@ export const PurchaseCredits = ({
 }: PurchaseCreditsProps) => {
   const [isLoading, setIsLoading] = useState(false)
   const { track } = useLogSnag()
+  const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
   useEffect(() => {
     // Check to see if this is a redirect back from Checkout
     const query = new URLSearchParams(window.location.search)
     if (query.get('success')) {
-      alert('Order placed! You will receive an email confirmation.')
+      onOpen()
     }
   }, [])
 
@@ -125,6 +132,28 @@ export const PurchaseCredits = ({
 
   return (
     <section className="purchase-credits">
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+        <ModalContent>
+          {onClose => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">
+                Payment Successful
+              </ModalHeader>
+              <ModalBody>
+                <p>
+                  Thank you for your purchase! You will receive a confirmation
+                  email shortly.
+                </p>
+              </ModalBody>
+              <ModalFooter>
+                <Button color="primary" onPress={onClose}>
+                  Ok
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
       <h2 className="text-xl font-semibold">Purchase Credits</h2>
       <p className="text-small text-default-500">
         Boost your sales by purchasing credits easily!
