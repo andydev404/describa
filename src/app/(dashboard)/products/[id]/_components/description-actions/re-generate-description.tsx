@@ -1,5 +1,6 @@
 'use client'
 
+import { useLogSnag } from '@logsnag/next'
 import {
   Button,
   Popover,
@@ -29,6 +30,7 @@ export const ReGenerateDescription = ({ productId, creditsCost }: Props) => {
       updateProperty: state.updateProperty
     }))
   )
+  const { track } = useLogSnag()
 
   useEffect(() => {
     updateProperty('creatingProduct', false)
@@ -37,6 +39,14 @@ export const ReGenerateDescription = ({ productId, creditsCost }: Props) => {
   const handleReGenerateDescription = async () => {
     setIsOpen(false)
     updateProperty('creatingProduct', true)
+    track({
+      channel: 'products',
+      event: `Description Re-Generation Started`,
+      tags: {
+        product: productId,
+        credits: creditsCost
+      }
+    })
     try {
       await reGenerateDescription(productId)
       toast.success('Description generated successfully')

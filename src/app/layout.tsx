@@ -1,6 +1,6 @@
 import { ClerkProvider } from '@clerk/nextjs'
+import { LogSnagProvider } from '@logsnag/next'
 import { Analytics } from '@vercel/analytics/react'
-import dynamic from 'next/dynamic'
 import NextTopLoader from 'nextjs-toploader'
 
 import { Providers } from './providers'
@@ -53,7 +53,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const Crisp = dynamic(() => import('../lib/crisp'))
   return (
     <ClerkProvider>
       <html lang="en">
@@ -62,6 +61,10 @@ export default function RootLayout({
           type="image/png"
           href="/favicon-96x96.png"
           sizes="96x96"
+        />
+        <LogSnagProvider
+          token="9746655c8fcb806cddf3bfbbd0f70a93"
+          project="describa"
         />
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <link rel="shortcut icon" href="/favicon.ico" />

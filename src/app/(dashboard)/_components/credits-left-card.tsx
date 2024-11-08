@@ -1,3 +1,4 @@
+import { useLogSnag } from '@logsnag/next'
 import { Button } from '@nextui-org/button'
 import { Card, CardBody, Progress } from '@nextui-org/react'
 import Link from 'next/link'
@@ -11,6 +12,8 @@ type Props = {
 export const CreditsLeftCard = ({ credits }: Props) => {
   const maxCredits = 100
   const percentage = (credits / maxCredits) * 100
+  const { track } = useLogSnag()
+
   return (
     <Card className="mx-2 w-full overflow-visible" shadow="sm">
       <CardBody className="py-5">
@@ -22,6 +25,12 @@ export const CreditsLeftCard = ({ credits }: Props) => {
         <Button
           as={Link}
           href={'/billing'}
+          onClick={() => {
+            track({
+              channel: 'billing',
+              event: `Sidebar Buy Credits Button Clicked`
+            })
+          }}
           size={'sm'}
           variant={'flat'}
           className={'mt-4'}

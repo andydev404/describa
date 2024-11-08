@@ -12,7 +12,7 @@ import { WelcomeEmail } from '@/features/users/emails/welcome'
 const resend = new Resend(env.RESEND_API_KEY)
 
 export async function POST(req: Request) {
-  const headerPayload = headers()
+  const headerPayload = await headers()
   const svixId = headerPayload.get('svix-id')
   const svixTimestamp = headerPayload.get('svix-timestamp')
   const svixSignature = headerPayload.get('svix-signature')

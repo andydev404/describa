@@ -23,7 +23,7 @@ export const CREDIT_PACKAGES = {
     price: 9.99,
     mostPopular: false,
     features: [`100 credits`, ...commonFeatures],
-    priceId: 'pri_01jbyhat1f896skmk3xxn3jdth'
+    priceId: 'price_1QIz5mJVT68bUi3j9ATt0jx8'
   },
   Professional: {
     id: 'professional',
@@ -33,7 +33,7 @@ export const CREDIT_PACKAGES = {
     price: 49.99,
     mostPopular: true,
     features: [`500 credits`, ...commonFeatures],
-    priceId: 'pri_01jbyhfvany3qh3t7803jc5j5x'
+    priceId: 'price_1QIz6dJVT68bUi3jQmn9tJa3'
   },
   Enterprise: {
     id: 'enterprise',
@@ -43,7 +43,7 @@ export const CREDIT_PACKAGES = {
     price: 89.99,
     mostPopular: false,
     features: [`1000 credits`, ...commonFeatures],
-    priceId: 'pri_01jbyhgsnpqwn2zbk7c30z02js'
+    priceId: 'price_1QIz6sJVT68bUi3jaBD7ElOD'
   }
 } as const
 

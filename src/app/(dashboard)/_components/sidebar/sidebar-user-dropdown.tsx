@@ -1,4 +1,5 @@
 import { useClerk, useUser } from '@clerk/nextjs'
+import { useLogSnag } from '@logsnag/next'
 import {
   Avatar,
   Button,
@@ -22,6 +23,7 @@ export const SidebarUserDropdown = ({
 }) => {
   const { isLoaded, isSignedIn, user } = useUser()
   const { signOut, openUserProfile } = useClerk()
+  const { track } = useLogSnag()
 
   if (!isLoaded || !isSignedIn) {
     return null
@@ -88,7 +90,15 @@ export const SidebarUserDropdown = ({
           <DropdownItem key="dashboard" onClick={() => openUserProfile()}>
             Profile
           </DropdownItem>
-          <DropdownItem key="Billing">
+          <DropdownItem
+            key="Billing"
+            onClick={() => {
+              track({
+                channel: 'billing',
+                event: `User Dropdown Billing Button Clicked`
+              })
+            }}
+          >
             <Link href={'/billing'} className={'block'}>
               Billing
             </Link>
@@ -105,7 +115,13 @@ export const SidebarUserDropdown = ({
 
         <DropdownSection aria-label="Help & Feedback">
           <DropdownItem
-            onClick={() => Crisp.chat.open()}
+            onClick={() => {
+              track({
+                channel: 'helps',
+                event: `User Dropdown Help & Feedback Button Clicked`
+              })
+              Crisp.chat.open()
+            }}
             key="help_and_feedback"
           >
             Help & Feedback

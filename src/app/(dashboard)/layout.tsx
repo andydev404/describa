@@ -1,4 +1,5 @@
 import { auth } from '@clerk/nextjs/server'
+import { SetUserIdServerComponent } from '@logsnag/next'
 import { redirect } from 'next/navigation'
 import { ReactNode } from 'react'
 
@@ -8,7 +9,7 @@ import { getUser } from '@/features/users/db/get-user'
 import Crisp from '@/lib/crisp'
 
 export default async function Layout({ children }: { children: ReactNode }) {
-  const { userId } = auth()
+  const { userId } = await auth()
 
   if (!userId) redirect('/')
 
@@ -22,6 +23,7 @@ export default async function Layout({ children }: { children: ReactNode }) {
       catalogs={catalogs}
       currentUserCredits={user.currentCredits}
     >
+      <SetUserIdServerComponent userId={userId} />
       <Crisp />
       {children}
     </DashboardLayout>

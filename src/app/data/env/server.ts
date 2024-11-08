@@ -9,6 +9,10 @@ export const env = createEnv({
     CLERK_WEBHOOK_SECRET: z.string(),
     UPLOADTHING_TOKEN: z.string(),
     RESEND_API_KEY: z.string(),
+    STRIPE_PUBLISHABLE_KEY: z.string(),
+    STRIPE_SECRET_KEY: z.string(),
+    STRIPE_WEBHOOK_SECRET: z.string(),
+    LOG_SNAG_KEY: z.string(),
     ANTHROPIC_API_KEY: z.string()
   },
   experimental__runtimeEnv: process.env

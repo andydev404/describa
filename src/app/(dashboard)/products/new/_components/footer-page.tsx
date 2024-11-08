@@ -1,3 +1,4 @@
+import { useLogSnag } from '@logsnag/next'
 import { Button } from '@nextui-org/react'
 import { Sparkles } from 'lucide-react'
 import { toast } from 'sonner'
@@ -22,7 +23,7 @@ export const FooterPage = () => {
       }))
     )
   const totalCreditsCost = calculateTotalCredits(features, INITIAL_CREDITS)
-
+  const { track } = useLogSnag()
   const generateProductDescription = async () => {
     const formData = new FormData()
     formData.append('tone', tone)
@@ -33,6 +34,16 @@ export const FooterPage = () => {
     })
 
     updateProperty('creatingProduct', true)
+
+    track({
+      channel: 'products',
+      event: `Description Generation Started`,
+      tags: {
+        tone,
+        language,
+        features: JSON.stringify(features)
+      }
+    })
 
     const response = await fetch('/api/v1/product-description', {
       method: 'POST',

@@ -1,5 +1,6 @@
 'use client'
 
+import { useLogSnag } from '@logsnag/next'
 import {
   Button,
   ScrollShadow,
@@ -37,6 +38,7 @@ export default function DashboardLayout({
   const isMobile = useMediaQuery('(max-width: 768px)')
   const pathname = usePathname()
   const currentPath = pathname.split('/')?.[1]
+  const { track } = useLogSnag()
 
   const onToggle = useCallback(() => {
     setIsCollapsed(prev => !prev)
@@ -137,7 +139,13 @@ export default function DashboardLayout({
                   }
                 )}
                 isIconOnly={isCollapsed}
-                onPress={() => Crisp.chat.open()}
+                onPress={() => {
+                  track({
+                    channel: 'helps',
+                    event: `Sidebar Help & Feedback Button Clicked`
+                  })
+                  Crisp.chat.open()
+                }}
                 startContent={
                   isCollapsed ? null : (
                     <CircleHelp size={20} className="text-default-500" />

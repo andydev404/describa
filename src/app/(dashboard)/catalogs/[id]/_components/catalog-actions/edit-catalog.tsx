@@ -1,5 +1,6 @@
 'use client'
 
+import { useLogSnag } from '@logsnag/next'
 import {
   Button,
   Input,
@@ -26,9 +27,19 @@ export const EditCatalog = ({ initialValue, catalogId }: Props) => {
   const [isPending, setTransition] = useTransition()
   const [title, setTitle] = useState(initialValue)
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
+  const { track } = useLogSnag()
 
   const handleEditCatalog = () => {
     if (!title) return
+    track({
+      channel: 'catalogs',
+      event: `Catalog Edited`,
+      tags: {
+        catalog: catalogId,
+        before: initialValue,
+        after: title
+      }
+    })
     setTransition(async () => {
       try {
         await updateCatalog(catalogId, { title })

@@ -1,5 +1,6 @@
 'use client'
 
+import { useLogSnag } from '@logsnag/next'
 import { Button } from '@nextui-org/button'
 import {
   Card,
@@ -10,13 +11,12 @@ import {
   Divider,
   Spacer
 } from '@nextui-org/react'
-import { initializePaddle, Paddle, PaddleEventData } from '@paddle/paddle-js'
+import { loadStripe } from '@stripe/stripe-js'
 import { Check } from 'lucide-react'
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { env } from '@/app/data/env/client'
-import { type NewBillingHistory } from '@/drizzle/schema'
-import { createBillingHistory } from '@/features/billing-history/actions/create-billing-history'
+import { createCheckoutSession } from '@/features/users/actions/stripe'
 import { CREDIT_PACKAGES } from '@/features/users/constants'
 
 interface PurchaseCreditsProps {
@@ -24,88 +24,48 @@ interface PurchaseCreditsProps {
   userEmail?: string
 }
 
-interface CheckoutSettings {
-  settings: {
-    allowLogout: boolean
-  }
-}
-
-const CHECKOUT_SETTINGS: CheckoutSettings = {
-  settings: {
-    allowLogout: false
-  }
-}
+const stripePromise = loadStripe(env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
 
 export const PurchaseCredits = ({
   userId,
   userEmail
 }: PurchaseCreditsProps) => {
-  const [paddle, setPaddle] = useState<Paddle | null>(null)
-
-  const handlePaymentEvents = useCallback((data: PaddleEventData) => {
-    const eventHandlers = {
-      'checkout.completed': () => handleCheckoutComplete(data),
-      default: () => console.log('Unhandled event:', data)
-    }
-
-    const handler =
-      eventHandlers[data.name as keyof typeof eventHandlers] ||
-      eventHandlers.default
-    handler()
-  }, [])
+  const [isLoading, setIsLoading] = useState(false)
+  const { track } = useLogSnag()
 
   useEffect(() => {
-    const initPaddle = async () => {
-      try {
-        const paddleInstance = await initializePaddle({
-          environment: env.NEXT_PUBLIC_PADDLE_ENV,
-          token: env.NEXT_PUBLIC_PADDLE_KEY,
-          pwCustomer: { id: userId },
-          checkout: CHECKOUT_SETTINGS,
-          eventCallback: handlePaymentEvents
-        })
-
-        if (paddleInstance) {
-          setPaddle(paddleInstance)
-        }
-      } catch (error) {
-        console.error('Failed to initialize Paddle:', error)
-      }
+    // Check to see if this is a redirect back from Checkout
+    const query = new URLSearchParams(window.location.search)
+    if (query.get('success')) {
+      alert('Order placed! You will receive an email confirmation.')
     }
+  }, [])
 
-    initPaddle()
-  }, [userId, handlePaymentEvents])
-
-  const openCheckout = useCallback(
-    async (priceId: string) => {
-      if (!paddle) return
-
-      paddle.Checkout.open({
-        items: [{ priceId, quantity: 1 }],
-        customer: {
-          email: userEmail || ''
+  const handlePurchaseCredits = async (priceId: string, credits: number) => {
+    try {
+      setIsLoading(true)
+      track({
+        channel: 'billing',
+        event: `Purchase Credits Started`,
+        tags: {
+          price_id: priceId,
+          credits,
+          user_email: userEmail!
         }
       })
-    },
-    [paddle, userEmail]
-  )
-
-  const handleCheckoutComplete = async (transaction: PaddleEventData) => {
-    if (!transaction.data) return
-    const item = transaction.data.items[0]
-    const credits =
-      Object.values(CREDIT_PACKAGES).find(p => p.priceId === item.price_id)
-        ?.credits || 0
-
-    const billingData: NewBillingHistory = {
-      clerkUserId: userId,
-      status: transaction.data.status,
-      paddleTransactionId: transaction.data.transaction_id,
-      amount: String(transaction.data.totals.total),
-      credits: credits
+      const { sessionId } = await createCheckoutSession({
+        priceId,
+        customerEmail: userEmail!,
+        credits,
+        userId
+      })
+      const stripe = await stripePromise
+      await stripe?.redirectToCheckout({ sessionId })
+    } catch (error) {
+      console.error('Error:', error)
+    } finally {
+      setIsLoading(false)
     }
-
-    await createBillingHistory(billingData)
   }
 
   const renderFeature = (feature: string) => (
@@ -151,7 +111,10 @@ export const PurchaseCredits = ({
       <CardFooter>
         <Button
           fullWidth
-          onClick={() => openCheckout(creditPackage.priceId)}
+          isLoading={isLoading}
+          onClick={() =>
+            handlePurchaseCredits(creditPackage.priceId, creditPackage.credits)
+          }
           className="bg-foreground text-background"
         >
           Purchase credits

@@ -12,6 +12,7 @@ export const env = createEnv({
     NEXT_PUBLIC_CRISP_KEY: z.string(),
     NEXT_PUBLIC_PADDLE_ENV: z.enum(['production', 'sandbox']),
     NEXT_PUBLIC_PADDLE_KEY: z.string(),
+    NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.string(),
     NEXT_PUBLIC_CLERK_SIGN_UP_FORCE_REDIRECT_URL: z.string()
   },
   experimental__runtimeEnv: {
@@ -26,6 +27,8 @@ export const env = createEnv({
       process.env.NEXT_PUBLIC_CLERK_SIGN_UP_FORCE_REDIRECT_URL,
     NEXT_PUBLIC_PADDLE_ENV: process.env.NEXT_PUBLIC_PADDLE_ENV,
     NEXT_PUBLIC_PADDLE_KEY: process.env.NEXT_PUBLIC_PADDLE_KEY,
+    NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY:
+      process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
     NEXT_PUBLIC_CRISP_KEY: process.env.NEXT_PUBLIC_CRISP_KEY
   }
 })

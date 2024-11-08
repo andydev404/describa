@@ -1,5 +1,6 @@
 'use client'
 
+import { useLogSnag } from '@logsnag/next'
 import {
   Button,
   Input,
@@ -25,9 +26,17 @@ export const NewCatalog = ({ buttonTitle = 'New Catalog' }: Props) => {
   const [isPending, setTransition] = useTransition()
   const [title, setTitle] = useState('')
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
+  const { track } = useLogSnag()
 
   const handleCreateCatalog = () => {
     if (!title) return
+    track({
+      channel: 'catalogs',
+      event: `New Catalog Created`,
+      tags: {
+        title: title
+      }
+    })
     setTransition(async () => {
       try {
         await createCatalog(title)

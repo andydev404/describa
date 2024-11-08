@@ -45,8 +45,10 @@ export const WelcomeEmail = () => {
     <Html>
       <Head />
       <Preview>
-        Thank you for choosing Describa! We&#39;re excited to help you transform your product images into compelling,
-        SEO-optimized descriptions that drive sales.</Preview>
+        Thank you for choosing Describa! We&#39;re excited to help you transform
+        your product images into compelling, SEO-optimized descriptions that
+        drive sales.
+      </Preview>
       <Tailwind
         config={{
           theme: {

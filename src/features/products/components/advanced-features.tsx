@@ -1,5 +1,6 @@
 'use client'
 
+import { useLogSnag } from '@logsnag/next'
 import { Card, CardBody, CardHeader, Divider, Spacer } from '@nextui-org/react'
 import { useShallow } from 'zustand/react/shallow'
 
@@ -22,6 +23,7 @@ export const AdvancedFeatures = () => {
       tone: state.tone
     }))
   )
+  const { track } = useLogSnag()
   const featuresIds = features.map(feature => feature.id)
 
   const handleFeatureSwitchChange = (
@@ -49,6 +51,13 @@ export const AdvancedFeatures = () => {
           <LanguageSelector
             value={language}
             onValueChange={value => {
+              track({
+                channel: 'products',
+                event: `Main language selected`,
+                tags: {
+                  language: value
+                }
+              })
               updateProperty('language', value)
               updateProperty(
                 'features',
@@ -68,6 +77,13 @@ export const AdvancedFeatures = () => {
           <LanguageSelector
             value={tone}
             onValueChange={value => {
+              track({
+                channel: 'products',
+                event: `Tone selected`,
+                tags: {
+                  tone: value
+                }
+              })
               updateProperty('tone', value)
             }}
             options={TONE_OPTIONS}
@@ -90,6 +106,14 @@ export const AdvancedFeatures = () => {
               key={feature.id}
               isSelected={featuresIds.includes(feature.id)}
               onValueChange={value => {
+                track({
+                  channel: 'products',
+                  event: `Advance feature clicked`,
+                  tags: {
+                    active: value,
+                    feature: feature.label
+                  }
+                })
                 handleFeatureSwitchChange(feature.id, value, feature)
               }}
               {...feature}

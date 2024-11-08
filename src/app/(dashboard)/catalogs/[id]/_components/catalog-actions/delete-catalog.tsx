@@ -1,5 +1,6 @@
 'use client'
 
+import { useLogSnag } from '@logsnag/next'
 import {
   Button,
   Popover,
@@ -20,8 +21,16 @@ type Props = {
 export const DeleteCatalog = ({ catalogId }: Props) => {
   const [isPending, startTransition] = useTransition()
   const router = useRouter()
+  const { track } = useLogSnag()
 
   const handleDelete = () => {
+    track({
+      channel: 'catalogs',
+      event: `Catalog Deleted`,
+      tags: {
+        catalog: catalogId
+      }
+    })
     startTransition(async () => {
       await deleteCatalog(catalogId)
       router.replace('/catalogs')
