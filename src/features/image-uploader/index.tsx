@@ -21,7 +21,7 @@ interface ImageUploaderProps {
   className?: string
 }
 
-export const ImageUploader = ({
+const ImageUploader = ({
   maxFiles = DEFAULT_MAX_FILES,
   maxSizeInMB = DEFAULT_MAX_SIZE_MB,
   onFilesChange,
@@ -74,3 +74,5 @@ export const ImageUploader = ({
     </Card>
   )
 }
+
+export default ImageUploader

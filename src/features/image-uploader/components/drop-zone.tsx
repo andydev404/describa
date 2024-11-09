@@ -1,3 +1,5 @@
+'use client'
+
 import { ImageUp } from 'lucide-react'
 
 import { DEFAULT_MAX_SIZE_MB } from '@/features/image-uploader/constants'

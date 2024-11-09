@@ -1,5 +1,6 @@
 'use client'
-import { Spacer } from '@nextui-org/react'
+import { Spacer, Spinner } from '@nextui-org/react'
+import dynamic from 'next/dynamic'
 import { useShallow } from 'zustand/react/shallow'
 
 import { AiLoading } from '@/app/(dashboard)/_components/ai-loading'
@@ -7,8 +8,16 @@ import { MachineTextAnimation } from '@/app/(dashboard)/_components/machine-text
 import { FooterPage } from '@/app/(dashboard)/products/new/_components/footer-page'
 import { HeaderPage } from '@/app/(dashboard)/products/new/_components/header-page'
 import { useBoundStore } from '@/app.store'
-import { ImageUploader } from '@/features/image-uploader'
 import { AdvancedFeatures } from '@/features/products/components/advanced-features'
+
+const ImageUploader = dynamic(() => import('@/features/image-uploader'), {
+  ssr: false,
+  loading: () => (
+    <div className={'flex flex-col items-center'}>
+      <Spinner color="default" />
+    </div>
+  )
+})
 
 const NewProductPage = () => {
   const { updateProperty, creatingProduct } = useBoundStore(

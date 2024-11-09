@@ -1,3 +1,5 @@
+'use client'
+
 import heic2any from 'heic2any'
 import { useCallback, useState } from 'react'
 import { toast } from 'sonner'
