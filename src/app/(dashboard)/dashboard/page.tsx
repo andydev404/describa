@@ -1,6 +1,6 @@
-import { RedirectToSignIn } from '@clerk/nextjs'
 import { auth } from '@clerk/nextjs/server'
 import { Card, CardBody, CardHeader, Spacer } from '@nextui-org/react'
+import { redirect } from 'next/navigation'
 
 import { LastProducts } from '@/app/(dashboard)/dashboard/_components/last-products'
 import { LastPurchases } from '@/app/(dashboard)/dashboard/_components/last-purchases'
@@ -13,7 +13,7 @@ import { getUser } from '@/features/users/db/get-user'
 const DashboardPage = async () => {
   const { userId } = await auth()
   if (!userId) {
-    return <RedirectToSignIn />
+    redirect('/setup-account')
   }
 
   // Time Saved per Product = 15 minutes - 0.17 minutes (10 seconds) = 14.83 minutes or 0.247 hours

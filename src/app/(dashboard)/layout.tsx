@@ -1,6 +1,6 @@
-import { RedirectToSignIn } from '@clerk/nextjs'
 import { auth } from '@clerk/nextjs/server'
 import { SetUserIdServerComponent } from '@logsnag/next'
+import { redirect } from 'next/navigation'
 import { ReactNode } from 'react'
 
 import DashboardLayout from '@/app/(dashboard)/_components/dashboard-layout'
@@ -12,12 +12,12 @@ export default async function Layout({ children }: { children: ReactNode }) {
   const { userId } = await auth()
 
   if (!userId) {
-    return <RedirectToSignIn />
+    return redirect('/setup-account')
   }
 
   const user = await getUser(userId)
   if (!user) {
-    return <RedirectToSignIn />
+    return redirect('/setup-account')
   }
 
   const catalogs = await getCatalogs()
