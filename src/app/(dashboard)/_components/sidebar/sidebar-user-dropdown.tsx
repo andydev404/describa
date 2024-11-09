@@ -127,7 +127,7 @@ export const SidebarUserDropdown = ({
             Help & Feedback
           </DropdownItem>
           <DropdownItem
-            onClick={() => signOut({ redirectUrl: '/' })}
+            onClick={() => signOut({ redirectUrl: '/sign-in' })}
             key="logout"
           >
             Log Out

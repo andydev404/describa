@@ -1,15 +1,19 @@
 import { WebhookEvent } from '@clerk/nextjs/server'
+import { LogSnag } from '@logsnag/next/server'
 import { headers } from 'next/headers'
 import { Resend } from 'resend'
 import { Webhook } from 'svix'
 
 import { env } from '@/app/data/env/server'
-import { CREDIT_PACKAGES } from '@/features/users/constants'
-import { CreateUserDb } from '@/features/users/db/create-user'
 import { deleteUser } from '@/features/users/db/delete-user'
-import { WelcomeEmail } from '@/features/users/emails/welcome'
+import WelcomeEmail from '@/features/users/emails/welcome'
 
 const resend = new Resend(env.RESEND_API_KEY)
+
+const logsnag = new LogSnag({
+  token: env.LOG_SNAG_KEY,
+  project: 'describa'
+})
 
 export async function POST(req: Request) {
   const headerPayload = await headers()
@@ -44,15 +48,20 @@ export async function POST(req: Request) {
 
   switch (event.type) {
     case 'user.created': {
-      await CreateUserDb({
-        clerkUserId: event.data.id,
-        currentCredits: CREDIT_PACKAGES.Free.credits
-      })
       await resend.emails.send({
         from: `Andy from Describa <andy@describa.ai>`,
         to: event.data.email_addresses[0].email_address,
         subject: `Welcome to Describa! Let's Create Amazing Product Descriptions 🚀`,
         react: WelcomeEmail()
+      })
+      await logsnag.track({
+        channel: 'users',
+        event: 'Account Created',
+        user_id: event.data.id,
+        tags: {
+          email: event.data.email_addresses[0].email_address
+        },
+        icon: '✅'
       })
 
       break
@@ -60,6 +69,12 @@ export async function POST(req: Request) {
     case 'user.deleted': {
       if (event.data.id != null) {
         await deleteUser(event.data.id)
+        await logsnag.track({
+          channel: 'users',
+          event: 'Account Deleted',
+          user_id: event.data.id,
+          icon: '❌'
+        })
       }
     }
   }

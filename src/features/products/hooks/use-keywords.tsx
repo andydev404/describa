@@ -16,7 +16,8 @@ export const useKeywords = (
   const keywordsList = keywordsFeature?.options || []
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value.trim())
+    const filteredValue = e.target.value.replace(/[^a-zA-Z0-9\s]/g, '')
+    setInputValue(filteredValue.trim())
   }
 
   const handleAddKeyword = () => {

@@ -68,7 +68,10 @@ export default function DashboardLayout({
               'justify-center gap-0 pl-0': isCollapsed
             })}
           >
-            <Text className="shrink-0" />
+            <Text
+              onClick={onToggle}
+              className={cn('shrink-0', { 'cursor-pointer': isCollapsed })}
+            />
             <span
               className={cn('w-full font-semibold uppercase opacity-100', {
                 'w-0 opacity-0': isCollapsed

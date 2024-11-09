@@ -21,7 +21,11 @@ import {
   findFeatureById
 } from '@/features/products/utils'
 
-export function MultilingualSelection() {
+type Props = {
+  resetStatus: () => void
+}
+
+export function MultilingualSelection({ resetStatus }: Props) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
   const { features, updateProperty, language } = useBoundStore(
     useShallow(state => ({
@@ -78,7 +82,16 @@ export function MultilingualSelection() {
           <Settings size={16} />
         </Button>
       </Badge>
-      <Modal backdrop={'blur'} isOpen={isOpen} onOpenChange={onOpenChange}>
+      <Modal
+        backdrop={'blur'}
+        onClose={() => {
+          if (selectedLanguages.length === 0) {
+            resetStatus()
+          }
+        }}
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+      >
         <ModalContent>
           {onClose => (
             <>

@@ -18,7 +18,11 @@ import { FEATURES_TYPES } from '@/features/products/constants'
 import { Feature } from '@/features/products/types'
 import { findFeatureById } from '@/features/products/utils'
 
-export function BrandGuidelines() {
+type Props = {
+  resetStatus: () => void
+}
+
+export function BrandGuidelines({ resetStatus }: Props) {
   const [guidelines, setGuidelines] = useState('')
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
@@ -83,7 +87,12 @@ export function BrandGuidelines() {
         backdrop="blur"
         isOpen={isOpen}
         onOpenChange={onOpenChange}
-        onClose={handleSaveGuidelines}
+        onClose={() => {
+          handleSaveGuidelines()
+          if (guideline.length === 0) {
+            resetStatus()
+          }
+        }}
         aria-labelledby="brand-guidelines-modal"
       >
         <ModalContent>
@@ -105,6 +114,7 @@ export function BrandGuidelines() {
                   placeholder="Input your brand guidelines so Describa generates descriptions that align with your brand voice and style"
                   description='i.e. Use formal language, avoid slang, use "customers" instead of "clients"'
                   aria-label="Brand Guidelines Input"
+                  maxLength={200}
                 />
               </ModalBody>
 

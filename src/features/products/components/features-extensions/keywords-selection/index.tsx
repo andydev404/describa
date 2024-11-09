@@ -17,7 +17,11 @@ import { KeywordInput } from '@/features/products/components/features-extensions
 import { KeywordsList } from '@/features/products/components/features-extensions/keywords-selection/keywords-list'
 import { useKeywords } from '@/features/products/hooks/use-keywords'
 
-export function KeywordsSelection() {
+type Props = {
+  resetStatus: () => void
+}
+
+export function KeywordsSelection({ resetStatus }: Props) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
   const { features, updateProperty } = useBoundStore(
     useShallow(state => ({
@@ -59,7 +63,12 @@ export function KeywordsSelection() {
       </Badge>
 
       <Modal
-        onClose={handleAddKeyword}
+        onClose={() => {
+          handleAddKeyword()
+          if (keywordsList.length === 0) {
+            resetStatus()
+          }
+        }}
         backdrop="blur"
         isOpen={isOpen}
         onOpenChange={onOpenChange}

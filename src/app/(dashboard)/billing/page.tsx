@@ -1,6 +1,6 @@
+import { RedirectToSignIn } from '@clerk/nextjs'
 import { auth, currentUser } from '@clerk/nextjs/server'
 import { Spacer } from '@nextui-org/react'
-import { redirect } from 'next/navigation'
 
 import { CreditBalance } from '@/app/(dashboard)/billing/_components/credit-balance'
 import { PurchaseCredits } from '@/app/(dashboard)/billing/_components/purchase-credits'
@@ -9,11 +9,15 @@ import { PurchaseHistory } from '@/app/(dashboard)/billing/_components/purchase-
 const BillingPage = async () => {
   const { userId } = await auth()
 
-  if (!userId) redirect('/')
+  if (!userId) {
+    return <RedirectToSignIn />
+  }
 
   const user = await currentUser()
 
-  if (!user) redirect('/')
+  if (!user) {
+    return <RedirectToSignIn />
+  }
   return (
     <>
       <header className="my-6 flex w-full items-center justify-between">

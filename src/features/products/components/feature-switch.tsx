@@ -43,11 +43,13 @@ export const FeatureSwitch = ({
   const renderSettingsButton = () => {
     switch (id) {
       case FEATURES_TYPES.MULTILINGUAL:
-        return <MultilingualSelection />
+        return (
+          <MultilingualSelection resetStatus={() => onValueChange(false)} />
+        )
       case FEATURES_TYPES.KEYWORDS:
-        return <KeywordsSelection />
+        return <KeywordsSelection resetStatus={() => onValueChange(false)} />
       case FEATURES_TYPES.BRAND:
-        return <BrandGuidelines />
+        return <BrandGuidelines resetStatus={() => onValueChange(false)} />
       default:
         return null
     }

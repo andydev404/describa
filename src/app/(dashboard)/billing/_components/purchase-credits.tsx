@@ -172,7 +172,7 @@ export const PurchaseCredits = ({
         Boost your sales by purchasing credits easily!
       </p>
       <Spacer y={4} />
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 xl:grid-cols-3">
         {Object.values(CREDIT_PACKAGES).slice(1).map(renderCreditPackage)}
       </div>
     </section>

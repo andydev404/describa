@@ -16,7 +16,7 @@ const ProductsPage = async () => {
 
   return (
     <>
-      <header className="my-6 flex w-full items-center justify-between">
+      <header className="my-6 flex w-full flex-wrap items-center justify-between gap-3">
         <div className="flex flex-col">
           <h1 className="text-xl font-bold text-default-900 lg:text-3xl">
             Products

@@ -10,15 +10,15 @@ export const Footer = () => {
     },
     {
       name: 'Features',
-      href: '#features'
+      href: '/#features'
     },
     {
       name: 'Pricing',
-      href: '#pricing'
+      href: '/#pricing'
     },
     {
       name: 'Faq',
-      href: '#faq'
+      href: '/#faq'
     },
     {
       name: 'Contact',

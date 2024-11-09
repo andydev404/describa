@@ -16,6 +16,7 @@ export const KeywordInput = ({ value, onChange, onKeyDown, onAdd }: Props) => (
     label="Type a keyword"
     value={value}
     onChange={onChange}
+    maxLength={20}
     onKeyDown={onKeyDown}
     description="You can hit enter to save the keyword"
     endContent={
