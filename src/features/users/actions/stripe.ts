@@ -18,13 +18,13 @@ interface ICreateCheckoutSession {
 }
 
 export async function createCheckoutSession({
-  customerEmail,
-  credits,
-  userId,
-  productName,
-  productDescription,
-  price
-}: ICreateCheckoutSession) {
+                                              customerEmail,
+                                              credits,
+                                              userId,
+                                              productName,
+                                              productDescription,
+                                              price
+                                            }: ICreateCheckoutSession) {
   const headersList = await headers()
   const protocol = headersList.get('x-forwarded-proto') || 'http'
   const host = headersList.get('host')
@@ -55,7 +55,7 @@ export async function createCheckoutSession({
         }
       ],
       mode: 'payment',
-      success_url: `${origin}/billing?success`,
+      success_url: `${origin}/billing?success=true`,
       cancel_url: `${origin}/billing`
     })
 
