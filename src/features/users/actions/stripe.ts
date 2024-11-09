@@ -12,19 +12,19 @@ interface ICreateCheckoutSession {
   customerEmail: string
   credits: number
   userId: string
-  productName: string;
-  productDescription: string,
+  productName: string
+  productDescription: string
   price: number
 }
 
 export async function createCheckoutSession({
-                                              customerEmail,
-                                              credits,
-                                              userId,
-                                              productName,
-                                              productDescription,
-                                              price
-                                            }: ICreateCheckoutSession) {
+  customerEmail,
+  credits,
+  userId,
+  productName,
+  productDescription,
+  price
+}: ICreateCheckoutSession) {
   const headersList = await headers()
   const protocol = headersList.get('x-forwarded-proto') || 'http'
   const host = headersList.get('host')
@@ -46,7 +46,9 @@ export async function createCheckoutSession({
             product_data: {
               name: `Describa ${productName} - ${credits} credits`,
               description: productDescription,
-              images: ['https://utfs.io/f/gzOTTZHX3WMAwrIrlhfqukbIj36nmVyBrUOEA9ixdWlvcFMf']
+              images: [
+                'https://utfs.io/f/gzOTTZHX3WMAwrIrlhfqukbIj36nmVyBrUOEA9ixdWlvcFMf'
+              ]
             },
             unit_amount: dollarToCents(price)
           }

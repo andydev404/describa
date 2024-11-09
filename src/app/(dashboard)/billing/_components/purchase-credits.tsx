@@ -33,9 +33,9 @@ interface PurchaseCreditsProps {
 const stripePromise = loadStripe(env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
 
 export const PurchaseCredits = ({
-                                  userId,
-                                  userEmail
-                                }: PurchaseCreditsProps) => {
+  userId,
+  userEmail
+}: PurchaseCreditsProps) => {
   const [isLoading, setIsLoading] = useState(false)
   const { track } = useLogSnag()
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
@@ -48,7 +48,12 @@ export const PurchaseCredits = ({
     }
   }, [])
 
-  const handlePurchaseCredits = async (credits: number, name: string, description: string, price: number) => {
+  const handlePurchaseCredits = async (
+    credits: number,
+    name: string,
+    description: string,
+    price: number
+  ) => {
     try {
       setIsLoading(true)
       track({
@@ -123,7 +128,12 @@ export const PurchaseCredits = ({
           fullWidth
           isLoading={isLoading}
           onClick={() =>
-            handlePurchaseCredits(creditPackage.credits, creditPackage.name, creditPackage.description, creditPackage.price)
+            handlePurchaseCredits(
+              creditPackage.credits,
+              creditPackage.name,
+              creditPackage.description,
+              creditPackage.price
+            )
           }
           className="bg-foreground text-background"
         >

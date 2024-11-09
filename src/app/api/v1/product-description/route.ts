@@ -6,7 +6,11 @@ import { type NewProduct } from '@/drizzle/schema'
 import { ERROR_TYPES, FEATURES_TYPES } from '@/features/products/constants'
 import { createProductWithDescription } from '@/features/products/db/create-product-with-description'
 import { Feature, ProductImageType } from '@/features/products/types'
-import { calculateTotalCredits, getTitleAndShortDescription, ParseProductDescription } from '@/features/products/utils'
+import {
+  calculateTotalCredits,
+  getTitleAndShortDescription,
+  ParseProductDescription
+} from '@/features/products/utils'
 import { INITIAL_CREDITS } from '@/features/users/constants'
 import { deductCredits } from '@/features/users/db/deduct-credits'
 import { getUser } from '@/features/users/db/get-user'
