@@ -37,7 +37,6 @@ export async function generateClaudeDescription({
     const response = await anthropic.messages.create({
       model: 'claude-3-5-sonnet-20241022',
       max_tokens: maxTokens,
-      temperature: 1,
       system:
         'You are an expert copywriter and marketer specialized in creating compelling product descriptions that drive engagement and sales',
       messages: [
