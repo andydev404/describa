@@ -20,7 +20,7 @@ export const CREDIT_PACKAGES = {
     name: 'Starter Pack',
     description: 'Ideal for small e-commerce stores',
     credits: 100,
-    price: 9.99,
+    price: 1,
     mostPopular: false,
     features: [`100 credits`, ...commonFeatures],
     priceId: 'price_1QIvKbJVT68bUi3jUB1u680n'
