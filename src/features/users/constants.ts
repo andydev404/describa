@@ -23,7 +23,7 @@ export const CREDIT_PACKAGES = {
     price: 9.99,
     mostPopular: false,
     features: [`100 credits`, ...commonFeatures],
-    priceId: 'price_1QIz5mJVT68bUi3j9ATt0jx8'
+    priceId: 'price_1QIvKbJVT68bUi3jUB1u680n'
   },
   Professional: {
     id: 'professional',

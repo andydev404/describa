@@ -1,9 +1,5 @@
 import { FEATURES_TYPES } from '@/features/products/constants'
-import {
-  Feature,
-  IProductDetails,
-  ProductImageType
-} from '@/features/products/types'
+import { Feature, IProductDetails, ProductImageType } from '@/features/products/types'
 
 export function findFeatureById(features: Feature[], featureId: string) {
   return features.find(feature => feature.id === featureId)
@@ -89,7 +85,7 @@ export function getTitleAndShortDescription(
     : (parsedDescription as IProductDetails).title
   const shortDescription = isMultilingual
     ? (parsedDescription as Record<string, IProductDetails>)[language]
-        .description
+      .description
     : (parsedDescription as IProductDetails).description
 
   return { title, shortDescription }
@@ -119,3 +115,5 @@ export function getStartAndEndWeekISO() {
     endOfWeekISO
   }
 }
+
+export const dollarToCents = (amount: number): number => Math.round(amount * 100)

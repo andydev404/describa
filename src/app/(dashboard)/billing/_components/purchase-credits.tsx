@@ -33,9 +33,9 @@ interface PurchaseCreditsProps {
 const stripePromise = loadStripe(env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
 
 export const PurchaseCredits = ({
-  userId,
-  userEmail
-}: PurchaseCreditsProps) => {
+                                  userId,
+                                  userEmail
+                                }: PurchaseCreditsProps) => {
   const [isLoading, setIsLoading] = useState(false)
   const { track } = useLogSnag()
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
@@ -48,23 +48,26 @@ export const PurchaseCredits = ({
     }
   }, [])
 
-  const handlePurchaseCredits = async (priceId: string, credits: number) => {
+  const handlePurchaseCredits = async (credits: number, name: string, description: string, price: number) => {
     try {
       setIsLoading(true)
       track({
         channel: 'billing',
         event: `Purchase Credits Started`,
         tags: {
-          price_id: priceId,
           credits,
-          user_email: userEmail!
+          user_email: userEmail!,
+          name,
+          price
         }
       })
       const { sessionId } = await createCheckoutSession({
-        priceId,
         customerEmail: userEmail!,
         credits,
-        userId
+        userId,
+        productName: name,
+        productDescription: description,
+        price
       })
       const stripe = await stripePromise
       await stripe?.redirectToCheckout({ sessionId })
@@ -120,7 +123,7 @@ export const PurchaseCredits = ({
           fullWidth
           isLoading={isLoading}
           onClick={() =>
-            handlePurchaseCredits(creditPackage.priceId, creditPackage.credits)
+            handlePurchaseCredits(creditPackage.credits, creditPackage.name, creditPackage.description, creditPackage.price)
           }
           className="bg-foreground text-background"
         >

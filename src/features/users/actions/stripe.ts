@@ -4,22 +4,27 @@ import { headers } from 'next/headers'
 import Stripe from 'stripe'
 
 import { env } from '@/app/data/env/server'
+import { dollarToCents } from '@/features/products/utils'
 
 const stripe = new Stripe(env.STRIPE_SECRET_KEY)
 
 interface ICreateCheckoutSession {
-  priceId: string
   customerEmail: string
   credits: number
   userId: string
+  productName: string;
+  productDescription: string,
+  price: number
 }
 
 export async function createCheckoutSession({
-  customerEmail,
-  credits,
-  priceId,
-  userId
-}: ICreateCheckoutSession) {
+                                              customerEmail,
+                                              credits,
+                                              userId,
+                                              productName,
+                                              productDescription,
+                                              price
+                                            }: ICreateCheckoutSession) {
   const headersList = await headers()
   const protocol = headersList.get('x-forwarded-proto') || 'http'
   const host = headersList.get('host')
@@ -35,13 +40,20 @@ export async function createCheckoutSession({
       },
       line_items: [
         {
-          price: priceId,
-          quantity: 1
+          quantity: 1,
+          price_data: {
+            currency: 'USD',
+            product_data: {
+              name: `Describa ${productName} - ${credits} credits`,
+              description: productDescription
+            },
+            unit_amount: dollarToCents(price)
+          }
         }
       ],
       mode: 'payment',
-      success_url: `${origin}/billing?success=true&session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${origin}/billing?canceled=true`
+      success_url: `${origin}/billing?success`,
+      cancel_url: `${origin}/billing`
     })
 
     return { sessionId: session.id }
