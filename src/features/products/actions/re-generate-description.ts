@@ -7,16 +7,13 @@ import { getProductDetails } from '@/features/products/db/get-product-details'
 import { updateProductDb } from '@/features/products/db/update-product'
 import { updateProductDescription } from '@/features/products/db/update-product-description'
 import { ProductImageType } from '@/features/products/types'
-import {
-  getTitleAndShortDescription,
-  ParseProductDescription
-} from '@/features/products/utils'
+import { getTitleAndShortDescription, ParseProductDescription } from '@/features/products/utils'
 import { deductCredits } from '@/features/users/db/deduct-credits'
 import { getUser } from '@/features/users/db/get-user'
 import { generateClaudeDescription } from '@/lib/claude'
 
 export const reGenerateDescription = async (productId: string) => {
-  const { userId } = auth()
+  const { userId } = await auth()
 
   if (userId == null) {
     throw new Error(ERROR_TYPES.UNAUTHORIZED)

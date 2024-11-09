@@ -11,7 +11,7 @@ export const updateProduct = async (
   productId: string,
   data: Partial<Product> & { tempCatalogId?: string }
 ) => {
-  const { userId } = auth()
+  const { userId } = await auth()
 
   if (!userId) throw new Error(ERROR_TYPES.UNAUTHORIZED)
 

@@ -8,7 +8,7 @@ import { ERROR_TYPES } from '@/features/products/constants'
 import type { NewBillingHistory } from '@/drizzle/schema'
 
 export const createBillingHistory = async (data: NewBillingHistory) => {
-  const { userId } = auth()
+  const { userId } = await auth()
 
   if (!userId) throw new Error(ERROR_TYPES.UNAUTHORIZED)
 

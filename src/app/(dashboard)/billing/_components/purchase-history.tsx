@@ -5,7 +5,7 @@ import { BillingHistoryTable } from '@/app/(dashboard)/billing/_components/billi
 import { getBillingHistory } from '@/features/billing-history/db/get-billing-history'
 
 export const PurchaseHistory = async () => {
-  const { userId } = auth()
+  const { userId } = await auth()
 
   if (!userId) redirect('/')
 

@@ -6,7 +6,7 @@ import { getCatalogsDb } from '@/features/catalogs/db/get-catalogs'
 import { ERROR_TYPES } from '@/features/products/constants'
 
 export const getCatalogs = async () => {
-  const { userId } = auth()
+  const { userId } = await auth()
 
   if (!userId) throw new Error(ERROR_TYPES.UNAUTHORIZED)
 

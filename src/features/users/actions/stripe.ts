@@ -45,7 +45,8 @@ export async function createCheckoutSession({
             currency: 'USD',
             product_data: {
               name: `Describa ${productName} - ${credits} credits`,
-              description: productDescription
+              description: productDescription,
+              images: ['https://utfs.io/f/gzOTTZHX3WMAwrIrlhfqukbIj36nmVyBrUOEA9ixdWlvcFMf']
             },
             unit_amount: dollarToCents(price)
           }

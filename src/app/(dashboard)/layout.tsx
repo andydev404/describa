@@ -11,10 +11,10 @@ import Crisp from '@/lib/crisp'
 export default async function Layout({ children }: { children: ReactNode }) {
   const { userId } = await auth()
 
-  if (!userId) redirect('/sign-in')
+  if (!userId) redirect('/')
 
   const user = await getUser(userId)
-  if (!user) redirect('/sign-in')
+  if (!user) redirect('/')
 
   const catalogs = await getCatalogs()
 

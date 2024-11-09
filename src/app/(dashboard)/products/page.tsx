@@ -8,7 +8,7 @@ import { ProductCard } from '@/features/products/components/product-card'
 import { getProducts } from '@/features/products/db/get-products'
 
 const ProductsPage = async () => {
-  const { userId } = auth()
+  const { userId } = await auth()
 
   if (!userId) redirect('/')
 

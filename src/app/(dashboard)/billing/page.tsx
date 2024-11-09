@@ -7,7 +7,7 @@ import { PurchaseCredits } from '@/app/(dashboard)/billing/_components/purchase-
 import { PurchaseHistory } from '@/app/(dashboard)/billing/_components/purchase-history'
 
 const BillingPage = async () => {
-  const { userId } = auth()
+  const { userId } = await auth()
 
   if (!userId) redirect('/')
 
