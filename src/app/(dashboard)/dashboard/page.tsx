@@ -12,7 +12,7 @@ import { getUser } from '@/features/users/db/get-user'
 
 const DashboardPage = async () => {
   const { userId } = auth()
-  if (!userId) redirect('/')
+  if (!userId) redirect('/sign-in')
 
   // Time Saved per Product = 15 minutes - 0.17 minutes (10 seconds) = 14.83 minutes or 0.247 hours
   const minsInHours = 0.247
