@@ -32,7 +32,7 @@ export const Dropzone = ({
       upload
     </p>
     <p className="mt-1 text-xs text-default-500">
-      PNG, JPG & WEBP formats, {DEFAULT_MAX_SIZE_MB}MB max file size
+      PNG, JPG, HEIC & WEBP formats, {DEFAULT_MAX_SIZE_MB}MB max file size
     </p>
     <p className="mt-1 text-xs text-default-500">
       {remainingFiles} image{remainingFiles !== 1 ? 's' : ''} remaining

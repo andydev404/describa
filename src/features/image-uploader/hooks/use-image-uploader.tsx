@@ -1,3 +1,4 @@
+import heic2any from 'heic2any'
 import { useCallback, useState } from 'react'
 import { toast } from 'sonner'
 
@@ -11,16 +12,64 @@ export const useImageUploader = (maxFiles: number, maxSizeInMB: number) => {
     if (file.size > maxSizeInMB * 1024 * 1024) {
       return `${file.name} - File size exceeds ${maxSizeInMB}MB limit`
     }
-    if (!Object.keys(ACCEPTED_FILE_TYPES).includes(file.type)) {
+    // Allow HEIC/HEIF files to pass validation since we'll convert them
+    const isHeic =
+      file.type === 'image/heic' ||
+      file.type === 'image/heif' ||
+      file.name.toLowerCase().endsWith('.heic') ||
+      file.name.toLowerCase().endsWith('.heif')
+
+    if (!isHeic && !Object.keys(ACCEPTED_FILE_TYPES).includes(file.type)) {
       return 'Invalid file type'
     }
     return null
   }
 
+  const convertHeicToJpeg = async (file: File): Promise<File> => {
+    try {
+      const blob = await heic2any({
+        blob: file,
+        toType: 'image/jpeg',
+        quality: 0.8
+      })
+
+      // Handle the case where heic2any returns an array of blobs
+      const convertedBlob = Array.isArray(blob) ? blob[0] : blob
+
+      return new File(
+        [convertedBlob],
+        file.name.replace(/\.(heic|heif)$/i, '.jpg'),
+        { type: 'image/jpeg' }
+      )
+    } catch (error) {
+      console.error('Error converting HEIC to JPEG:', error)
+      throw new Error('Failed to convert HEIC image')
+    }
+  }
+
+  const processFile = async (file: File): Promise<UploadedFile | null> => {
+    const isHeic =
+      file.type === 'image/heic' ||
+      file.type === 'image/heif' ||
+      file.name.toLowerCase().endsWith('.heic') ||
+      file.name.toLowerCase().endsWith('.heif')
+
+    try {
+      const processedFile = isHeic ? await convertHeicToJpeg(file) : file
+      return {
+        file: processedFile,
+        preview: URL.createObjectURL(processedFile)
+      }
+    } catch (error) {
+      toast.error(`Failed to process ${file.name}`)
+      return null
+    }
+  }
+
   const handleDrop = useCallback(
-    (acceptedFiles: File[]) => {
-      if (files.length + acceptedFiles.length > 3) {
-        toast.error('You can only upload up to 3 images')
+    async (acceptedFiles: File[]) => {
+      if (files.length + acceptedFiles.length > maxFiles) {
+        toast.error(`You can only upload up to ${maxFiles} images`)
         return
       }
 
@@ -33,14 +82,19 @@ export const useImageUploader = (maxFiles: number, maxSizeInMB: number) => {
         return true
       })
 
-      const newFiles = validFiles.map(file => ({
-        file,
-        preview: URL.createObjectURL(file)
-      }))
+      try {
+        const processedFiles = await Promise.all(validFiles.map(processFile))
 
-      setFiles(prevFiles => [...prevFiles, ...newFiles])
+        const newFiles = processedFiles.filter(
+          (file): file is UploadedFile => file !== null
+        )
+
+        setFiles(prevFiles => [...prevFiles, ...newFiles])
+      } catch (error) {
+        toast.error('Error processing one or more files')
+      }
     },
-    [files]
+    [files, maxFiles]
   )
 
   const removeFile = useCallback((fileToRemove: UploadedFile) => {
