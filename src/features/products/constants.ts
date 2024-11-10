@@ -1,6 +1,35 @@
-import { Feature, LanguageOption } from '@/features/products/types'
+import { Feature } from '@/features/products/types'
 
-export const LANGUAGE_OPTIONS: LanguageOption[] = [
+// Defining string literal types specifically for language and tone options
+export type Language =
+  | 'en'
+  | 'zh'
+  | 'es'
+  | 'ar'
+  | 'hi'
+  | 'ja'
+  | 'de'
+  | 'fr'
+  | 'pt'
+  | 'ru'
+export type Tone =
+  | 'professional'
+  | 'conversational'
+  | 'enthusiastic'
+  | 'technical'
+  | 'empathetic'
+  | 'educational'
+  | 'persuasive'
+  | 'casual'
+
+// Defining the LanguageOption type, ensuring id and value are of type Language or Tone
+export type TypedLanguageOption<T> = {
+  id: T
+  label: string
+  value: T
+}
+
+export const LANGUAGE_OPTIONS: TypedLanguageOption<Language>[] = [
   {
     id: 'en',
     label: 'English',
@@ -53,7 +82,7 @@ export const LANGUAGE_OPTIONS: LanguageOption[] = [
   }
 ]
 
-export const TONE_OPTIONS: LanguageOption[] = [
+export const TONE_OPTIONS: TypedLanguageOption<Tone>[] = [
   {
     id: 'professional',
     label: 'Professional',

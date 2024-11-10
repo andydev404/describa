@@ -112,6 +112,25 @@ export const BillingHistoryTable = pgTable('billing_history', {
   status: varchar('status').notNull()
 })
 
+export const ApiKeysTable = pgTable(
+  'api_keys',
+  {
+    ...commonColumns,
+    clerkUserId: text('clerk_user_id')
+      .notNull()
+      .references(() => UsersTable.clerkUserId, { onDelete: 'cascade' }),
+    apiKey: text('api_key').notNull().unique(),
+    name: varchar('name', { length: 100 }),
+    lastUsed: timestamp('last_used', { withTimezone: true }),
+    isActive: boolean('is_active').default(true).notNull()
+  },
+  table => ({
+    clerkUserIdIndex: index('api_keys.clerk_user_id_index').on(
+      table.clerkUserId
+    )
+  })
+)
+
 // Relations
 
 export const productsRelations = relations(ProductsTable, ({ one }) => ({
@@ -143,6 +162,13 @@ export const catalogsRelations = relations(CatalogsTable, ({ many }) => ({
   products: many(ProductsTable)
 }))
 
+export const apiKeysRelations = relations(ApiKeysTable, ({ one }) => ({
+  user: one(UsersTable, {
+    fields: [ApiKeysTable.clerkUserId],
+    references: [UsersTable.clerkUserId]
+  })
+}))
+
 // Types
 
 export type Users = typeof UsersTable.$inferSelect
@@ -159,3 +185,6 @@ export type NewCatalog = typeof CatalogsTable.$inferInsert
 
 export type BillingHistory = typeof BillingHistoryTable.$inferInsert
 export type NewBillingHistory = typeof BillingHistoryTable.$inferInsert
+
+export type ApiKey = typeof ApiKeysTable.$inferSelect
+export type NewApiKey = typeof ApiKeysTable.$inferInsert

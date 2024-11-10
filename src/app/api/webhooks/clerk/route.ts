@@ -5,6 +5,8 @@ import { Resend } from 'resend'
 import { Webhook } from 'svix'
 
 import { env } from '@/app/data/env/server'
+import { createApiKey } from '@/features/api-keys/db/create-api-key'
+import { generateApiKey } from '@/features/api-keys/utils'
 import { deleteUser } from '@/features/users/db/delete-user'
 import WelcomeEmail from '@/features/users/emails/welcome'
 
@@ -48,6 +50,11 @@ export async function POST(req: Request) {
 
   switch (event.type) {
     case 'user.created': {
+      await createApiKey({
+        clerkUserId: event.data.id,
+        apiKey: generateApiKey(),
+        name: 'Default'
+      })
       await resend.emails.send({
         from: `Andy from Describa <andy@describa.ai>`,
         to: event.data.email_addresses[0].email_address,
