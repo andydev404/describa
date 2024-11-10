@@ -4,7 +4,7 @@ import { env } from '@/app/data/env/server'
 import { FEATURES_TYPES } from '@/features/products/constants'
 import { Feature, ProductImageType } from '@/features/products/types'
 import { transformImagesToClaudeBase64 } from '@/features/products/utils'
-import { generatePrompt } from '@/lib/claude/prompt'
+import { generatePromptV2 } from '@/lib/claude/prompt'
 
 const anthropic = new Anthropic({
   apiKey: env.ANTHROPIC_API_KEY
@@ -23,7 +23,7 @@ export async function generateClaudeDescription({
   tone,
   language
 }: DescriptionProps) {
-  const prompt = generatePrompt({ features, tone, language })
+  const prompt = generatePromptV2({ features, tone, language })
   const defaultToken = 2024
   const multilingualFeature = features.find(
     f => f.id === FEATURES_TYPES.MULTILINGUAL
@@ -38,7 +38,7 @@ export async function generateClaudeDescription({
       model: 'claude-3-5-sonnet-20241022',
       max_tokens: maxTokens,
       system:
-        'You are an expert copywriter and marketer specialized in creating compelling product descriptions that drive engagement and sales',
+        'You are an expert copywriter and marketer specialized in creating compelling product descriptions that drive engagement and sales. Your task is to analyze product images and generate multi-platform marketing content.',
       messages: [
         {
           role: 'user',

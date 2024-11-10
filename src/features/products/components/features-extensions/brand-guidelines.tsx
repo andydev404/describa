@@ -85,11 +85,12 @@ export function BrandGuidelines({ resetStatus }: Props) {
 
       <Modal
         backdrop="blur"
+        size={'3xl'}
         isOpen={isOpen}
         onOpenChange={onOpenChange}
         onClose={() => {
           handleSaveGuidelines()
-          if (guideline.length === 0) {
+          if (guidelines.length === 0) {
             resetStatus()
           }
         }}
