@@ -7,11 +7,7 @@ import { useShallow } from 'zustand/react/shallow'
 import { useBoundStore } from '@/app.store'
 import { FeatureSwitch } from '@/features/products/components/feature-switch'
 import { LanguageSelector } from '@/features/products/components/language-selector'
-import {
-  FEATURES,
-  LANGUAGE_OPTIONS,
-  TONE_OPTIONS
-} from '@/features/products/constants'
+import { FEATURES, LANGUAGE_OPTIONS, TONE_OPTIONS } from '@/features/products/constants'
 import { Feature } from '@/features/products/types'
 
 export const AdvancedFeatures = () => {
@@ -47,7 +43,7 @@ export const AdvancedFeatures = () => {
         <h2 className="text-large font-medium">Features</h2>
       </CardHeader>
       <CardBody>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <LanguageSelector
             value={language}
             onValueChange={value => {
@@ -64,9 +60,9 @@ export const AdvancedFeatures = () => {
                 features.map(f =>
                   f.id === 'multilingual'
                     ? {
-                        ...f,
-                        options: f?.options?.filter(opt => opt !== value) || []
-                      }
+                      ...f,
+                      options: f?.options?.filter(opt => opt !== value) || []
+                    }
                     : f
                 )
               )
@@ -100,7 +96,7 @@ export const AdvancedFeatures = () => {
 
         <Spacer y={4} />
 
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
           {FEATURES.map(feature => (
             <FeatureSwitch
               key={feature.id}

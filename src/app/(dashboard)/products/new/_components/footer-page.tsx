@@ -62,7 +62,7 @@ export const FooterPage = () => {
   }
 
   return (
-    <div className="flex w-full justify-end gap-2">
+    <div className="flex w-full flex-col lg:flex-row justify-end gap-2">
       <TotalCostLabel totalCreditsCost={totalCreditsCost} />
       <Button
         onClick={generateProductDescription}

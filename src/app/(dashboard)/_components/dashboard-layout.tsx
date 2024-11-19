@@ -1,15 +1,9 @@
 'use client'
 
 import { useLogSnag } from '@logsnag/next'
-import {
-  Button,
-  ScrollShadow,
-  Spacer,
-  Tooltip,
-  useDisclosure
-} from '@nextui-org/react'
+import { Button, ScrollShadow, Spacer, Tooltip, useDisclosure } from '@nextui-org/react'
 import { Crisp } from 'crisp-sdk-web'
-import { CircleHelp, PanelLeftClose, PanelLeftOpen, Text } from 'lucide-react'
+import { CircleHelp, Menu, PanelLeftClose, PanelLeftOpen, Text } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 import { ReactNode, useCallback, useState } from 'react'
 import { useMediaQuery } from 'usehooks-ts'
@@ -29,11 +23,11 @@ type Props = {
 }
 
 export default function DashboardLayout({
-  children,
-  catalogs,
-  currentUserCredits
-}: Props) {
-  const { isOpen, onOpenChange } = useDisclosure()
+                                          children,
+                                          catalogs,
+                                          currentUserCredits
+                                        }: Props) {
+  const { isOpen, onOpenChange, onOpen } = useDisclosure()
   const [isCollapsed, setIsCollapsed] = useState(false)
   const isMobile = useMediaQuery('(max-width: 768px)')
   const pathname = usePathname()
@@ -171,6 +165,9 @@ export default function DashboardLayout({
 
       {/* Content */}
       <div className="w-full flex-1 overflow-y-auto bg-default-100 p-8">
+        <Button isIconOnly onPress={onOpen} className={'flex md:hidden'}>
+          <Menu />
+        </Button>
         {children}
       </div>
     </div>
