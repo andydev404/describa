@@ -73,8 +73,13 @@ export async function transformImagesToClaudeBase64(
 }
 
 export function ParseProductDescription(description: string) {
+  const cleaned = description
+    .replace(/^```(?:json)?\s*\n?/, '')
+    .replace(/\n?```\s*$/, '')
+    .trim()
+
   const parsedDescription: IProductDetails | Record<string, IProductDetails> =
-    JSON.parse(description)
+    JSON.parse(cleaned)
 
   return parsedDescription
 }

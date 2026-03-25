@@ -279,5 +279,6 @@ export function generatePromptV2({
     }
 
   Ensure that all content maintains the specified tone and adheres to all guidelines throughout the creation process.
+  Return only the raw JSON object. Do not wrap it in markdown code fences or any other formatting.
   `
 }
